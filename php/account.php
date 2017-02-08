@@ -2,6 +2,8 @@
 
 function checkAccountCmds($cmd)
 {
+	global $salt;
+	
 	if( $cmd == "get_experiments_list" ){
 	
 		try{

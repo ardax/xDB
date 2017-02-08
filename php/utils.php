@@ -5,6 +5,8 @@ $mongoDBAddr = "";
 
 function connect2DB($dbName)
 {
+	global $mongoDBAddr;
+	
 	try{
 		$m = new MongoClient("mongodb://".$mongoDBAddr);
 		return $m->selectDB($dbName);
