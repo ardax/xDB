@@ -21,22 +21,18 @@ function checkTaskQueryCmds($cmd)
 	
 			$tasks = $db->selectCollection("Tasks-".$experimentID)->find(array('in_queue' => 1))->sort(array('queue_index'=> 1));
 			foreach( $tasks as $task ){
-				$index = (int)$task['queue_index'];
-				if( $index%$indexSize != $indexDivident )
-					continue;
-	
-					if( $i >= $startAt ){
-						array_push($output['tasks'], array('params' => $task['params'],
-								'experiment_id' => $task['experiment_id'],
-								'queue_date' => $task['queue_date']->sec,
-								'queue_index' => $task['queue_index'],
-								'running' => $task['is_running'],
-								'oid' => (string)$task['_id']));
-						$k++;
-						if( $k == $pageSize )
-							break;
-					}
-					$i++;
+				if( $i >= $startAt ){
+					array_push($output['tasks'], array('params' => $task['params'],
+							'experiment_id' => $task['experiment_id'],
+							'queue_date' => $task['queue_date']->sec,
+							'queue_index' => $task['queue_index'],
+							'running' => $task['is_running'],
+							'oid' => (string)$task['_id']));
+					$k++;
+					if( $k == $pageSize )
+						break;
+				}
+				$i++;
 			}
 	
 			print json_encode($output);
