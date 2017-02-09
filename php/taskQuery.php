@@ -2,10 +2,12 @@
 
 function checkTaskQueryCmds($cmd)
 {
+	global $xdbMongoDBName;
+	
 	if( ISSET($_GET['experiment_id']) ){
 
 		$experimentID = $_GET['experiment_id'];
-		$db = connect2DB("XDB");
+		$db = connect2DB($xdbMongoDBName);
 			
 		if( $cmd == "get_task_queue" ){
 			$startAt = 0;

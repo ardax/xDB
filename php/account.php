@@ -3,13 +3,14 @@
 function checkAccountCmds($cmd)
 {
 	global $salt;
+	global $xdbMongoDBName;
 	
 	if( $cmd == "get_experiments_list" ){
 	
 		try{
 			$experiments = array('results' => array());
 
-			$db = connect2DB("XDB");
+			$db = connect2DB($xdbMongoDBName);
 			$user = $db->Users->findOne(array('user' => $_SESSION['user']));
 			if( $user ){
 				if( ISSET($user['shared_experiments']) ){
@@ -58,6 +59,13 @@ function checkAccountCmds($cmd)
 							array_push($devFiles, $entry);
 						}
 
+						$testFiles = array();
+						$testFileEntries = $db->selectCollection("TestFiles-".$experimentID)->find();
+						foreach( $testFileEntries as $testFileEntry){
+							$entry = array('file' => $testFileEntry['file']);
+							array_push($testFiles, $entry);
+						}
+						
 						$token = null;
 						if( !ISSET($info['token']) ){
 							$token = (string)(new MongoId());
@@ -66,7 +74,7 @@ function checkAccountCmds($cmd)
 						else
 							$token = $info['token'];
 						
-						$experimentEntry = array('id' => $experimentID, 'name' => $info['name'], 'token' => $token, 'shown_results' => $shown_results, 'dev_files' => $devFiles);
+						$experimentEntry = array('id' => $experimentID, 'name' => $info['name'], 'token' => $token, 'shown_results' => $shown_results, 'dev_files' => $devFiles, 'test_files' => $testFiles);
 						if( ISSET($info['shared']) )
 							$experimentEntry['shared'] = $info['shared'];
 							
@@ -89,7 +97,7 @@ function checkAccountCmds($cmd)
 	else if( $cmd == "create_new_experiment" ){
 	
 		try{
-			$db = connect2DB("XDB");
+			$db = connect2DB($xdbMongoDBName);
 			$user = $db->Users->findOne(array('user' => $_SESSION['user']));
 			if( $user ){
 				foreach($user['experiments'] as $experimentID){
@@ -133,7 +141,7 @@ function checkAccountCmds($cmd)
 	}
 	else if( $cmd == "change_password" ){
 
-		$db = connect2DB("XDB");
+		$db = connect2DB($xdbMongoDBName);
 		$user = $db->Users->findOne(array('user' => $_SESSION['user']));
 		if( $user ){
 			$hashed_password = crypt($_GET['curr'], $salt);

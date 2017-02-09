@@ -103,6 +103,18 @@ function createRun(result)
 		panel += "<tr><td width=20 nowrap><input type=checkbox value='dev="+focusedExperiment.selectedFile+"' checked/></td><td class=SmallTxt width=200 nowrap>dev="+focusedExperiment.selectedFile+"</td></tr>";
 	}
 	
+	for(var i = 0; i < focusedExperiment.devFiles.length; i++){
+		if( focusedExperiment.devFiles[i]['file'] != focusedExperiment.selectedFile )
+			panel += "<tr><td width=20 nowrap><input type=checkbox value='dev="+focusedExperiment.devFiles[i]['file']+"'/></td><td class=SmallTxt width=200 nowrap>dev="+focusedExperiment.devFiles[i]['file']+"</td></tr>";
+	}
+	
+	for(var i = 0; i < focusedExperiment.testFiles.length; i++){
+		panel += "<tr><td width=20 nowrap><input type=checkbox value='test="+focusedExperiment.testFiles[i]['file']+"' ";
+		if( i == 0 )
+			panel += "checked";
+		panel += "/></td><td class=SmallTxt width=200 nowrap>dev="+focusedExperiment.testFiles[i]['file']+"</td></tr>";
+	}
+	
 	panel += "</table></div></td></tr>";
 	panel += "<tr height=50><td align=right style='padding-right:30px'>";
 	var featureValue = "";

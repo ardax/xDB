@@ -2,6 +2,7 @@ var requestPerformed = false;
 
 function Admin()
 {
+	this.userName = "admin";
 	this.requests = Array();
 	
 	this.load = function(userName, callback){

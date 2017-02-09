@@ -2,10 +2,12 @@
 
 function checkExperimentCmds($cmd)
 {
+	global $xdbMongoDBName;
+	
 	if( ISSET($_GET['experiment_id']) ){
 		
 		$experimentID = $_GET['experiment_id'];
-		$db = connect2DB("XDB");
+		$db = connect2DB($xdbMongoDBName);
 	
 		if( $cmd == "onload" ){
 			// output test files and parameters
@@ -66,7 +68,7 @@ function checkExperimentCmds($cmd)
 				}
 			}
 			else{
-				$output = array('params' => array(), 'dev_files' => array(), 'experiment_info' => array());
+				$output = array('params' => array(), 'dev_files' => array(), 'test_files' => array(), 'experiment_info' => array());
 				$results = $db->selectCollection("Params-".$experimentID)->find();
 				foreach( $results as $res )
 					array_push($output['params'], $res['param']);
@@ -83,6 +85,12 @@ function checkExperimentCmds($cmd)
 						$entry['baselines'] = $res['baselines'];
 					
 					array_push($output['dev_files'], $entry);
+				}
+
+				$results = $db->selectCollection("TestFiles-".$experimentID)->find();
+				foreach( $results as $res ){
+					$entry = array('file' => $res['file']);
+					array_push($output['test_files'], $entry);
 				}
 				
 				$info = $db->Experiments->findOne(array('_id' => new MongoId($experimentID)));
@@ -164,17 +172,23 @@ function checkExperimentCmds($cmd)
 
 				$run['params'] = $paramsStr;
 				$run['runid'] = (string)$res['_id'];
-				$run['start_date'] = $res['start_date']->sec;
+				if( ISSET($res['start_date']) )
+					$run['start_date'] = $res['start_date']->sec;
 				if( ISSET($res['finish_date']) )
 					$run['finish_date'] = $res['finish_date']->sec;
 				$run['dev'] = $res['dev'];
 				$run['test'] = $res['test'];
 
-				$run['fscore'] = $res['max_dev']['f'];
-				$run['acc'] = $res['max_dev']['a'];
-				$run['p'] = $res['max_dev']['p'];
-				$run['r'] = $res['max_dev']['r'];
+				if( ISSET($res['max_dev']) ){
+					$run['fscore'] = $res['max_dev']['f'];
+					$run['acc'] = $res['max_dev']['a'];
+					$run['p'] = $res['max_dev']['p'];
+					$run['r'] = $res['max_dev']['r'];
+				}
+				else{
 					
+				}
+				
 				array_push($output['results'], $run);
 				$i += 1;
 			}
@@ -219,16 +233,23 @@ function checkExperimentCmds($cmd)
 
 				$run['params'] = $paramsStr;
 				$run['runid'] = (string)$res['_id'];
-				$run['start_date'] = $res['start_date']->sec;
-				$run['finish_date'] = $res['finish_date']->sec;
+				if( ISSET($res['start_date']) )
+					$run['start_date'] = $res['start_date']->sec;
+				if( ISSET($res['finish_date']) )
+					$run['finish_date'] = $res['finish_date']->sec;
+				if( ISSET($res['last_report_date']) )
+					$run['last_report_date'] = $res['last_report_date']->sec;
+				
 				$run['dev'] = $res['dev'];
 				$run['test'] = $res['test'];
 
-				$run['fscore'] = $res['max_dev']['f'];
-				$run['acc'] = $res['max_dev']['a'];
-				$run['p'] = $res['max_dev']['p'];
-				$run['r'] = $res['max_dev']['r'];
-
+				if( ISSET($res['max_dev']) ){
+					$run['fscore'] = $res['max_dev']['f'];
+					$run['acc'] = $res['max_dev']['a'];
+					$run['p'] = $res['max_dev']['p'];
+					$run['r'] = $res['max_dev']['r'];
+				}
+				
 				array_push($output['results'], $run);
 				$i += 1;
 			}
@@ -285,8 +306,10 @@ function checkExperimentCmds($cmd)
 
 							$run['params'] = $paramsStr;
 							$run['runid'] = (string)$res['_id'];
-							$run['start_date'] = $res['start_date']->sec;
-							$run['finish_date'] = $res['finish_date']->sec;
+							if( ISSET($res['start_date']) )
+								$run['start_date'] = $res['start_date']->sec;
+							if( ISSET($res['finish_date']) )
+								$run['finish_date'] = $res['finish_date']->sec;
 							$run['dev'] = $res['dev'];
 							$run['test'] = $res['test'];
 
@@ -376,6 +399,7 @@ function checkExperimentCmds($cmd)
 			$db->selectCollection("Runs-".$experimentID)->drop();
 			$db->selectCollection("Params-".$experimentID)->drop();
 			$db->selectCollection("DevFiles-".$experimentID)->drop();
+			$db->selectCollection("TestFiles-".$experimentID)->drop();
 			$db->selectCollection("Tasks-".$experimentID)->drop();
 		
 			// remove the experiment from user's account

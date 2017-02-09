@@ -1,12 +1,12 @@
 <?php
 
 $salt = '$1a$2107$usessillystringforsalt$35$';
-$mongoDBAddr = "";
+$mongoDBAddr = "79.123.176.88:27055";
+$xdbMongoDBName = "XDB";
 
 function connect2DB($dbName)
 {
 	global $mongoDBAddr;
-	
 	try{
 		$m = new MongoClient("mongodb://".$mongoDBAddr);
 		return $m->selectDB($dbName);

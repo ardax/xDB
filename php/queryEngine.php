@@ -16,7 +16,7 @@ if( ISSET($_SESSION['user']) == FALSE ){
 	
 		// find the user from given token and set for this call only
 		$userName = "";
-		$db = connect2DB("XDB");
+		$db = connect2DB($xdbMongoDBName);
 		$users = $db->Users->find();
 		foreach( $users as $user ){
 			if( ISSET($user['experiments']) ){

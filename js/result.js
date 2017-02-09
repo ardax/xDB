@@ -17,12 +17,19 @@ function Result()
 
 	this.load = function(json){
 		this.fscore = json['fscore'];
-		this.acc = json['acc'];
-		this.precision = json['p'];
-		this.recall = json['r'];
+		if( 'acc' in json )
+			this.acc = json['acc'];
+		if( 'p' in json )
+			this.precision = json['p'];
+		if('r' in json )
+			this.recall = json['r'];
+		
 		this.runid = json['runid'];
 		this.startDate = parseInt(json['start_date']);
-		this.finishDate = parseInt(json['finish_date']);
+		if( 'finish_date' in json )
+			this.finishDate = parseInt(json['finish_date']);
+		if( 'last_report_date' in json )
+			this.finishDate = parseInt(json['last_report_date']);
 		this.setParams(json['params']);
 		this.dev = json['dev'];
 		this.test = json['test'];
@@ -245,7 +252,7 @@ function RunGraph()
 
 	        var max = 0;
 	        var maxAt = 0;
-	        var maxTest = 0;
+	        var maxTest = -1;
 	        for(var i = 0; i < this.results.length; i++){
 	        	var result = this.results[i];
 	        	if( result['t'] == 0 ){
@@ -305,7 +312,10 @@ function RunGraph()
 			panel += "<tr height=20><td></td></tr>";
 			panel += "<tr height=26><td class=SmallTxt style='padding-left:10px'> Maximum "+this.resultType+" on Dev = "+roundFloat(max)+"</td></tr>";
 			panel += "<tr height=26><td class=SmallTxt style='padding-left:10px'> achieved at Epoch "+maxAt+"</td></tr>";
-			panel += "<tr height=26><td class=SmallTxt style='padding-left:10px'> "+this.resultType+" on Test = "+roundFloat(maxTest)+"</td></tr>";
+			if( maxTest != -1 )
+				panel += "<tr height=26><td class=SmallTxt style='padding-left:10px'> "+this.resultType+" on Test = "+roundFloat(maxTest)+"</td></tr>";
+			else
+				panel += "<tr height=26><td class=SmallTxt style='padding-left:10px'> no test score available</td></tr>";
 			panel += "</table>";
 			panel += "</td><td align=center id='ResultsPanel'></td></tr>";
 			panel += "<tr height=50><td></td><td align=right style='padding-right:5px'><input type=button class='gray button' style='width:80;height:30' value='Close' onclick='javascript:hideShownGraph()'/></td></tr>";

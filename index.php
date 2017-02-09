@@ -17,7 +17,7 @@ if( ISSET($_SESSION['user']) == FALSE ){
 		
 		$hashed_password = crypt($login_pass, $salt);
 		
-		$db = connect2DB("XDB");
+		$db = connect2DB($xdbMongoDBName);
 		$user = $db->Users->findOne(array('user' => $login_user, 'pass' => $hashed_password));
 		if( $user ){
 			$_SESSION['user'] = $login_user;
@@ -43,7 +43,7 @@ if( ISSET($_SESSION['user']) == FALSE ){
 			$loginErrMsg = 'Not valid password given';
 		}
 		else{
-			$db = connect2DB("XDB");
+			$db = connect2DB($xdbMongoDBName);
 			$user = $db->Users->findOne(array('user' => $new_user));
 			if( $user ){
 				$loginErrMsg = 'There is already a user with given name';
@@ -55,13 +55,36 @@ if( ISSET($_SESSION['user']) == FALSE ){
 				}
 				else{
 					$hashed_password = crypt($new_pass, $salt);
-					$db->UserRequests->insert(array('user' => $new_user,
-													'pass' => $hashed_password,
-													'request_date' => new MongoDate(),
-													'request_ip' => $_SERVER['REMOTE_ADDR']));
+					$userRequestEntry = array('user' => $new_user,
+											  'pass' => $hashed_password,
+										  	  'request_date' => new MongoDate(),
+											  'request_ip' => $_SERVER['REMOTE_ADDR']);
+					$db->UserRequests->insert($userRequestEntry);
 		
 					$newUserMsg = "Your new user request is recorded.<br>Please wait for admin approval.";
 				}
+			}
+		}
+	}
+	else if( ISSET($_POST['new_admin_pass']) ){
+		if( doesAdminAccountExist() == false ){
+			if( $_POST['new_admin_pass'] != $_POST['new_admin_pass_again'] ){
+				$loginErrMsg = "Given two passwords do not match";
+			}
+			else if( $_POST['new_admin_pass'] != "" ){
+				$new_admin_pass = htmlspecialchars($_POST['new_admin_pass']);
+	
+				$db = connect2DB($xdbMongoDBName);
+
+				$hashed_password = crypt($new_admin_pass, $salt);
+				$adminEntry = array('user' => 'admin',
+									'pass' => $hashed_password);
+				$db->Users->insert($adminEntry);
+				
+				$newUserMsg = "Admin password set.<br>Please continue with creating a new account.";
+			}
+			else{
+				$loginErrMsg = "Please enter non-empty password";
 			}
 		}
 	}
@@ -130,7 +153,31 @@ if( ISSET($_SESSION['user']) == FALSE ){
 <i><h1>ERRRRR!</h1><br>MongoDB Address is not set in 'php/utils.php' file.<br>You need to enter valid address before using xDB.</i>
 <?php	
 		}
+		else if( doesAdminAccountExist() == false ){
+?>
+<form id='login_form' method="post" action="index.php">
+<table class=LoginBox>
+<tr height=180><td align=center valign=top><table width=100% style='border-bottom:1px solid #dfdfdf'><tr><td align=center style='font-family: Verdana,Arial,Helvetica,sans-serif;font-size:80'><i>x</i>DB</td></tr><tr><td class=SmallTxt style='line-height:150%' align=center><i>Keep, Manage, Explore<br>Your Experiment Results</i><br><br></td></tr></table></td></tr>
+<tr><td class=BigTxt style='padding-bottom:20px'><b>Set Admin Password</b></td></tr>
+<tr><td class=SmallTxt>Enter Password:</td></tr>
+<tr><td><input name=new_admin_pass type=password style='padding:4px;border:1px solid #dfdfdf;width:300px;height:40px;font-size:20px;'></td></tr>
+<tr><td class=SmallTxt>Enter Password Again:</td></tr>
+<tr><td><input name=new_admin_pass_again type=password style='padding:4px;border:1px solid #dfdfdf;width:300px;height:40px;font-size:20px;'></td></tr>
+<tr><td align=right><input type=submit class='blue button' onclick="location.href='?';" value='Set'></td></tr>
+<?php
+			if( $loginErrMsg != "" ){
+?>
+<tr><td class=SmallTxt align=center style='color:red;padding-top:10px'><i><?php print $loginErrMsg; ?></i></td></tr>
+<?php 
+			}
+			else if( $newUserMsg != "" ){
+?>
+<tr><td class=SmallTxt align=center style='color:green;padding-top:10px'><i><?php print $newUserMsg; ?></i></td></tr>
+<?php 
+			}
+		}
 		else{
+			
 			if( ISSET($_GET['show']) && $_GET['show'] == "new_user_form" ){
 ?>
 <form id='login_form' method="post" action="index.php?show=new_user_form">
@@ -179,3 +226,16 @@ if( ISSET($_SESSION['user']) == FALSE ){
 ?>
 </body>
 </html>
+<?php
+
+function doesAdminAccountExist()
+{
+	global $xdbMongoDBName;
+	
+	$db = connect2DB($xdbMongoDBName);
+	if( $db->Users->findOne(array('user' => 'admin')) )
+		return true;
+	return false;
+}
+
+?>

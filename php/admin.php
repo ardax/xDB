@@ -2,9 +2,11 @@
 
 function checkAdminCmds($cmd)
 {
+	global $xdbMongoDBName;
+	
 	if( $cmd == "get_new_user_requests" ){
 
-		$db = connect2DB("XDB");
+		$db = connect2DB($xdbMongoDBName);
 		if( $db ){
 			$userRequests = $db->UserRequests->find();
 			
@@ -22,7 +24,7 @@ function checkAdminCmds($cmd)
 		if( ISSET($_GET['request_id']) ){
 			$requestID = $_GET['request_id'];
 
-			$db = connect2DB("XDB");
+			$db = connect2DB($xdbMongoDBName);
 			if( $db ){
 				$request = $db->UserRequests->findOne(array('_id' => new MongoId($requestID)));
 				if( $request ){
@@ -39,7 +41,7 @@ function checkAdminCmds($cmd)
 		if( ISSET($_GET['request_id']) ){
 			$requestID = $_GET['request_id'];
 		
-			$db = connect2DB("XDB");
+			$db = connect2DB($xdbMongoDBName);
 			if( $db ){
 				$db->UserRequests->remove(array('_id' => new MongoId($requestID)));
 				print "OK";

@@ -14,6 +14,7 @@ function Experiment()
 	this.showingLatest = false;
 	this.features = Array();
 	this.devFiles = Array();
+	this.testFiles = Array();
 	this.featureValues = {};
 	this.selectedFile = "";
 	
@@ -35,6 +36,13 @@ function Experiment()
 			}
 
 			this.devFiles.sort(function(a,b) { return a['file']-b['file']; });
+		}
+
+		if( 'test_files' in data ){
+			for(var i = 0; i < data['test_files'].length; i++){
+				var testFile = data['test_files'][i];
+				this.testFiles.push(testFile);
+			}
 		}
 	}
 	this.showExperimentSettings = function(){		
