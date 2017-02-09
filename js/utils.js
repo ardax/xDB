@@ -1,5 +1,5 @@
 
-var queryEngineAddress = "php/queryEngine.php";
+var xdbEngineAddress = "php/xdbEngine.php";
 
 function createRequest()
 {
@@ -35,7 +35,7 @@ function createRequest()
 function makeRequest(req, parameters, callback)
 {
 	req.onreadystatechange = callback;
-	req.open('GET', queryEngineAddress+'?'+parameters, true);
+	req.open('GET', xdbEngineAddress+'?'+parameters, true);
 	req.send(null);
 }
 
