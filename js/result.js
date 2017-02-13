@@ -185,13 +185,12 @@ function unhighlightFeature(f)
 function deleteRun(runid)
 {
 	var req = createRequest();
-	makeRequest(req, "cmd=delete_run&experiment_id="+focusedExperiment+"&id="+runid, function(){ onDeleteRun(req, runid) });
+	makeRequest(req, "cmd=delete_run&experiment_id="+focusedExperiment.id+"&id="+runid, function(){ onDeleteRun(req, runid) });
 }
 
 function onDeleteRun(req, runid)
 {
 	if( req.readyState == 4 ){
-		
 		if( req.responseText == "ok" ){
 			for(var i = 0; i < shownResults.length; i++){
 				var shownResult = shownResults[i];

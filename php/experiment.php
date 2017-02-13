@@ -363,17 +363,21 @@ function checkExperimentCmds($cmd)
 			$runID = $_GET['id'];
 			$runOID = new MongoId($runID);
 
-			$run = $db->selectCollection("Runs-".$experimentID)->findOne(array('_id' => $runOID));
-			if( $run ){
+			$coll = "Runs-".$experimentID;
+			$expColl = $db->selectCollection($coll);
+			$result = $expColl->findOne(array('_id' => new MongoId($runID)));
+			if( $result ){
 				$testFile = $run['test'];
 				$devFile = $run['dev'];
 				
-				$db->selectCollection("Runs-".$experimentID)->remove(array('_id' => $runOID));
+				$expColl->remove(array('_id' => $runOID));
 
 				updateBestResult($db, $experimentID, $testFile, True);
 				updateLatestResult($db, $experimentID, $testFile, True);
 				updateBestResult($db, $experimentID, $devFile, False);
 				updateLatestResult($db, $experimentID, $devFile, False);
+				
+				print "ok";
 			}
 		}
 		else if( $cmd == "delete_experiment_file_results" ){
