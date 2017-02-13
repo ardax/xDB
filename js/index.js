@@ -643,6 +643,7 @@ function onResize(e)
 
 function onGoBack(e)
 {
+	hideAllMsgPanels();
 	loadWLink(document.location);
 	return true;
 }

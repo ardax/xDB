@@ -190,7 +190,7 @@ function showCurtain()
 	hideToolbarMenu();
 	
 	var elmCurtain = document.getElementById("curtain");
-	elmCurtain.style.top = document.body.scrollTop;
+	elmCurtain.style.top = 0
 	elmCurtain.style.left = 0;
 	elmCurtain.style.width = document.body.clientWidth;
 	elmCurtain.style.height = document.body.clientHeight;

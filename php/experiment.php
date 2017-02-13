@@ -176,6 +176,8 @@ function checkExperimentCmds($cmd)
 					$run['start_date'] = $res['start_date']->sec;
 				if( ISSET($res['finish_date']) )
 					$run['finish_date'] = $res['finish_date']->sec;
+				if( ISSET($res['last_report_date']) )
+					$run['last_report_date'] = $res['last_report_date']->sec;
 				$run['dev'] = $res['dev'];
 				$run['test'] = $res['test'];
 

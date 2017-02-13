@@ -1,7 +1,7 @@
 <?php
 
 $salt = '$1a$2107$usessillystringforsalt$35$';
-$mongoDBAddr = "79.123.176.88:27055";
+$mongoDBAddr = "";
 $xdbMongoDBName = "XDB";
 
 function connect2DB($dbName)

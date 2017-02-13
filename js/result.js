@@ -90,7 +90,10 @@ function Result()
 		
 		if( this.baseline == false ){
 			panel += "<td class=SmallTxt width=100 align=center nowrap><small>";
-			panel += printDate(this.finishDate);
+			if( this.finishDate != "" )
+				panel += printDate(this.finishDate);
+			else
+				panel += printDate(this.startDate);
 			panel += "</small></td>";
 		}
 		else{
