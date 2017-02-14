@@ -110,7 +110,7 @@ function checkExperimentCmds($cmd)
 			if( ISSET($_GET['start_at']) )
 				$startAt = $_GET['start_at'];
 		
-			$count = $db->selectCollection("Runs-".$experimentID)->find(array('test' => $_GET['dev_file']))->count();
+			$count = $db->selectCollection("Runs-".$experimentID)->find(array('dev' => $_GET['dev_file']))->count();
 	
 			$maxType = "max_dev";
 	
@@ -220,7 +220,7 @@ function checkExperimentCmds($cmd)
 				}
 			}
 			
-			$results = $db->selectCollection("Runs-".$experimentID)->find($query)->sort(array('_id' => -1))->skip($startAt)->limit($topN);
+			$results = $db->selectCollection("Runs-".$experimentID)->find($query)->sort(array('last_report_date' => -1, 'start_date' => -1))->skip($startAt)->limit($topN);
 	
 			$i = 0;
 			$output = array('results' => array(), 'numof_results' => $count, 'page_size' => $topN, 'start_at' => $startAt);

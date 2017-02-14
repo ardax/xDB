@@ -371,7 +371,10 @@ function RunGraph()
         	var result = this.results[i];
         	if( result['t'] == 0 ){
 	            var arr = new Array();
-	            arr.push(result['i']);
+	            if( result['i'].indexOf('.') == -1 )
+	            	arr.push(parseInt(result['i'])+1);
+	            else
+	            	arr.push(result['i']);
 	            
 	            if( this.resultType == "PRF" ){
 	                arr.push(roundFloat(result['p']));
