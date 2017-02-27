@@ -110,8 +110,6 @@ function checkExperimentCmds($cmd)
 			if( ISSET($_GET['start_at']) )
 				$startAt = $_GET['start_at'];
 		
-			$count = $db->selectCollection("Runs-".$experimentID)->find(array('dev' => $_GET['dev_file']))->count();
-	
 			$maxType = "max_dev";
 	
 			$sortCriteria = array($maxType.".f" => -1, $maxType.".a" => -1);
@@ -133,14 +131,18 @@ function checkExperimentCmds($cmd)
 				}
 				else{
 					if( $dbInfo['shown_results']['accuracy'] == 0 ){
-						if( $dbInfo['shown_results']['precision'] == 0 )
-							$sortCriteria = array($maxType.".f" => -1, $maxType.".r" => -1);
+						if( $dbInfo['shown_results']['precision'] == 0 ){
+							if( $dbInfo['shown_results']['recall'] == 0 )
+								$sortCriteria = array($maxType.".f" => -1);
+							else
+								$sortCriteria = array($maxType.".f" => -1, $maxType.".r" => -1);
+						}
 						else
 							$sortCriteria = array($maxType.".f" => -1, $maxType.".p" => -1);
 					}
 				}
 			}
-
+			
 			$query = array('dev' => $_GET['dev_file']);
 		
 			if( ISSET($_GET['fixed_features']) ){
@@ -156,7 +158,8 @@ function checkExperimentCmds($cmd)
 					$query['params.'.$feature] = $value;
 				}
 			}
-
+			
+			$count = $db->selectCollection("Runs-".$experimentID)->find($query)->count();
 			$results = $db->selectCollection("Runs-".$experimentID)->find($query)->sort($sortCriteria)->skip($startAt)->limit($topN);
 
 			$i = 0;
@@ -203,7 +206,6 @@ function checkExperimentCmds($cmd)
 			if( ISSET($_GET['start_at']) )
 				$startAt = $_GET['start_at'];
 		
-			$count = $db->selectCollection("Runs-".$experimentID)->find(array('dev' => $_GET['dev_file']))->count();
 			$query = array('dev' => $_GET['dev_file']);
 						
 			if( ISSET($_GET['fixed_features']) ){
@@ -219,7 +221,8 @@ function checkExperimentCmds($cmd)
 					$query['params.'.$feature] = $value;
 				}
 			}
-			
+
+			$count = $db->selectCollection("Runs-".$experimentID)->find($query)->count();
 			$results = $db->selectCollection("Runs-".$experimentID)->find($query)->sort(array('last_report_date' => -1, 'start_date' => -1))->skip($startAt)->limit($topN);
 	
 			$i = 0;
