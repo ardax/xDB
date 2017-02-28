@@ -108,7 +108,7 @@ function checkExperimentCmds($cmd)
 			$topN = 50;
 			$startAt = 0;
 			if( ISSET($_GET['start_at']) )
-				$startAt = $_GET['start_at'];
+				$startAt = (int)$_GET['start_at'];
 		
 			$maxType = "max_dev";
 	
@@ -204,7 +204,7 @@ function checkExperimentCmds($cmd)
 			$topN = 50;
 			$startAt = 0;
 			if( ISSET($_GET['start_at']) )
-				$startAt = $_GET['start_at'];
+				$startAt = (int)$_GET['start_at'];
 		
 			$query = array('dev' => $_GET['dev_file']);
 						

@@ -290,6 +290,9 @@ function Experiment()
 	}
 	this.isFeatureHidden = function(feature){
 		if( this.hiddenFeatures ){
+			if( feature[feature.length-1] == '=' )
+				feature = feature+"false";
+			
 			for(var i = 0; i < this.hiddenFeatures.length; i++){
 				if( this.hiddenFeatures[i] == feature )
 					return true;

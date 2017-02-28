@@ -253,7 +253,7 @@ function RunGraph()
 				this.results = "acc";
 
 	        var max = 0;
-	        var maxAt = 0;
+	        var maxAt = "";
 	        var maxTest = -1;
 	        for(var i = 0; i < this.results.length; i++){
 	        	var result = this.results[i];
@@ -294,10 +294,11 @@ function RunGraph()
 	        	}
 	        }
 
-			this.width = document.body.clientWidth-400;
-			this.height = 500;
-			if( this.width > 1000 )
-				this.width = 1000;
+            if( maxAt && maxAt.indexOf('.') == -1 )
+            	maxAt = parseInt(maxAt)+1
+
+			this.width = document.body.clientWidth-200;
+			this.height = document.body.clientHeight-200;
 			
 			var panel = "";
 			panel += "<table cellpadding=0 cellspacing=0 width=100%>";
@@ -392,7 +393,7 @@ function RunGraph()
         }
 
         var memory_stats = google.visualization.arrayToDataTable(mstats);
-        var memory_stats_options = {'backgroundColor': '#f8f8f8', 'height': this.height-110, 'width': this.width-250};
+        var memory_stats_options = {'backgroundColor': '#f8f8f8', 'height': this.height-80, 'width': this.width-250};
         var chart2 = new google.visualization.LineChart(e);
         chart2.draw(memory_stats, memory_stats_options);
 	}
