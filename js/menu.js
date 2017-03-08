@@ -15,7 +15,7 @@ function Menu()
 		
 		var e = document.getElementById("menu");
 		if( e ){
-			e.style.top = document.body.scrollTop+toolbarHeight+2;
+			e.style.top = toolbarHeight+2;
 			e.style.left = left;
 			e.style.width = width;
 			e.style.display = '';

@@ -278,6 +278,8 @@ function updateBestResult($db, $experimentID, $file, $isTestFile)
 				$latestResult['acc'] = $res['max_test']['a'];
 				$latestResult['p'] = $res['max_test']['p'];
 				$latestResult['r'] = $res['max_test']['r'];
+
+				$db->selectCollection("DevFiles-".$experimentID)->update(array('file' => $file), array('$set' => array('best_result' => $latestResult)));
 			}
 		}
 		else if( ISSET($res['max_dev']) ){
@@ -285,9 +287,9 @@ function updateBestResult($db, $experimentID, $file, $isTestFile)
 			$latestResult['acc'] = $res['max_dev']['a'];
 			$latestResult['p'] = $res['max_dev']['p'];
 			$latestResult['r'] = $res['max_dev']['r'];
-		}
 
-		$db->selectCollection("DevFiles-".$experimentID)->update(array('file' => $file), array('$set' => array('best_result' => $latestResult)));
+			$db->selectCollection("DevFiles-".$experimentID)->update(array('file' => $file), array('$set' => array('best_result' => $latestResult)));
+		}
 	}
 }
 
@@ -314,6 +316,8 @@ function updateLatestResult($db, $experimentID, $file, $isTestFile)
 				$latestResult['acc'] = $res['max_test']['a'];
 				$latestResult['p'] = $res['max_test']['p'];
 				$latestResult['r'] = $res['max_test']['r'];
+				
+				$db->selectCollection("DevFiles-".$experimentID)->update(array('file' => $file), array('$set' => array('latest_result' => $latestResult)));
 			}
 		}
 		else if( ISSET($res['max_dev']) ){
@@ -321,9 +325,9 @@ function updateLatestResult($db, $experimentID, $file, $isTestFile)
 			$latestResult['acc'] = $res['max_dev']['a'];
 			$latestResult['p'] = $res['max_dev']['p'];
 			$latestResult['r'] = $res['max_dev']['r'];
-		}
 
-		$db->selectCollection("DevFiles-".$experimentID)->update(array('file' => $file), array('$set' => array('latest_result' => $latestResult)));
+			$db->selectCollection("DevFiles-".$experimentID)->update(array('file' => $file), array('$set' => array('latest_result' => $latestResult)));
+		}
 	}
 }
 ?>

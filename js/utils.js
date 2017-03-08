@@ -208,3 +208,18 @@ function roundFloat(value, numOfDigitsAfterDot)
 	numOfDigitsAfterDot = typeof numOfDigitsAfterDot !== 'undefined' ? numOfDigitsAfterDot : 2;
 	return parseFloat(value).toFixed(numOfDigitsAfterDot);
 }
+
+function randomString(length)
+{
+	length = typeof length !== 'undefined' ? length : 0;
+	var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
+
+	if( length <= 0 )
+		length = 2+Math.floor(Math.random() * chars.length);
+
+	var str = "";
+	for (var i = 0; i < length; i++)
+		str += chars[Math.floor(Math.random() * chars.length)];
+
+	return str;
+}

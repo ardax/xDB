@@ -123,21 +123,21 @@ function showExperimentMenu()
 	var menu = new Menu();
 
 	if( focusedExperiment.sharer != "" ){
-		menu.addOption("Manage Features", "");
+		menu.addOption("Manage Parameters", "");
 		menu.addOption("Delete All Results", "", true);
 		menu.addOption("Delete This Experiment", "");
-		menu.addOption("Hide Features in listing", "", true);
-		menu.addOption("Fix a Feature", "javascript:fixFeature()");
+		menu.addOption("Hide Parameters in listing", "", true);
+		menu.addOption("Fix a Parameter", "javascript:fixFeature()");
 		menu.addOption("Show Task Queue", "", true);
 		menu.addOption("Create a New Run", "");
 		menu.addOption("Show Settings", "", true);
 	}
 	else{
-		menu.addOption("Manage Features", "javascript:manageFeatures()");
+		menu.addOption("Manage Parameters", "javascript:manageFeatures()");
 		menu.addOption("Delete All Results", "javascript:showExperimentSettings()", true);
 		menu.addOption("Delete This Experiment", "javascript:deleteExperiment()");
-		menu.addOption("Hide Features in listing", "javascript:selectFeaturesToHide()", true);
-		menu.addOption("Fix a Feature", "javascript:fixFeature()");
+		menu.addOption("Hide Parameters in listing", "javascript:selectFeaturesToHide()", true);
+		menu.addOption("Fix a Parameter", "javascript:fixFeature()");
 		menu.addOption("Show Task Queue", "javascript:showTaskQueue()", true);
 		menu.addOption("Create a New Run", "javascript:createRun()");
 		menu.addOption("Show Settings", "javascript:showExperimentSettings()", true);

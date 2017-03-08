@@ -80,7 +80,7 @@ function fixFeature()
 
 	panel += "<table width=500 height=280 style='background:#ffffff'><tr><td align=center>";
 	panel += "<table width=400>";
-	panel += "<tr><td><h2>Fix feature</h2></td></tr>";
+	panel += "<tr><td><h2>Fix a Parameter</h2></td></tr>";
 	panel += "<tr height=20><form id=FixFeatureForm><td class=SmallTxt>Select from features list:</td></tr>";
 	panel += "<tr><td><select id=selectedFeatureToFix style='height:35px;width:400px;background:#fafafa;border:1px solid #cacaca;font-size:16' onchange=\"updateSelectedFeatureValues(this);\">";
 	var firstVisibleFeature = "";
@@ -122,7 +122,7 @@ function fixAnotherFeatureValue(selectedFeature, selectedFeatureValue)
 
 	panel += "<table width=500 height=280 style='background:#ffffff'><tr><td align=center>";
 	panel += "<table width=400>";
-	panel += "<tr><td><h2>Fix feature</h2></td></tr>";
+	panel += "<tr><td><h2>Fix a Parameter</h2></td></tr>";
 	panel += "<tr height=20><form id=FixFeatureForm><td class=SmallTxt>Select from features list:</td></tr>";
 	panel += "<tr><td><select id=selectedFeatureToFix style='height:35px;width:400px;background:#fafafa;border:1px solid #cacaca;font-size:16' onchange=\"updateSelectedFeatureValues(this);\">";
 	for(var i = 0; i < focusedExperiment.features.length; i++){
@@ -574,14 +574,20 @@ function loadWLink(link)
 	focusedExperiment.selectedFile = "";
 	shownTab = TAB_HOME;
 	fixedFeatures.length = 0;
+	startAt = 0;
 	
 	var url = parseURL(link);
 	for(var key in url.searchObject){
 		if( key ){
 			if( key == "experiment_id" )
 				exID = url.searchObject[key];
-			else if( key == "showing" && url.searchObject[key] == "task_queue" )
-				shownTab = TAB_TASK_QUEUE;
+			else if( key == "showing" ){
+				if( url.searchObject[key] == "task_queue" )
+					shownTab = TAB_TASK_QUEUE;
+			}
+			else if( key == "start_at" ){
+				startAt = parseInt(url.searchObject[key]);
+			}
 			else if( key == "dev_file" )
 				focusedExperiment.selectedFile = url.searchObject[key];
 			else

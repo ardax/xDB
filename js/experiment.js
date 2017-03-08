@@ -465,6 +465,7 @@ function showLatestResults()
 	if( fixedFeaturesList != "" )
 		query += "&fixed_features="+fixedFeaturesList;
 	
+	alert(query);
 	var req = createRequest();
 	makeRequest(req, query, function(){ onLoadResults(req, "get_latest_results"); });
 }

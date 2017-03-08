@@ -2,7 +2,7 @@
 function selectFeaturesToHide()
 {
 	var panel = "";
-	panel += "<form name='SelectFeaturesToHideTable'><table style='background:#ffffff'><tr height=30><td style='padding:10px'><h3>Select Features to Hide</h3></td></tr>";
+	panel += "<form name='SelectFeaturesToHideTable'><table style='background:#ffffff'><tr height=30><td style='padding:10px'><h3>Select Parameters to Hide</h3></td></tr>";
 	panel += "<tr><td style='padding-left:30px;padding-bottom:10px;padding-right:10px'>";
 	panel += "<div class=ScrollablePanel style='height:500;width:540'>";
 	panel += "<table width=100%>";
@@ -63,7 +63,7 @@ function manageFeatures()
 	var width = 490;
 	var panel = "";
 	panel += "<table width=490 style='background:#ffffff'>";
-	panel += "<tr><td style='padding:10px' class=SmallTxt><h2>Manage Features</h2></td></tr>";
+	panel += "<tr><td style='padding:10px' class=SmallTxt><h2>Manage Parameters</h2></td></tr>";
 	panel += "<tr><td align=center>";
 	panel += "<textarea id=managed_feature_list spellcheck=false class=SmallTxt style='border:1px solid #ababab;width:450px;height:500px;line-height:130%'>";
 	for(var i = 0; i < focusedExperiment.features.length; i++){
