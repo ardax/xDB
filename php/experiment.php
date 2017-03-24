@@ -189,6 +189,7 @@ function checkExperimentCmds($cmd)
 					$run['acc'] = $res['max_dev']['a'];
 					$run['p'] = $res['max_dev']['p'];
 					$run['r'] = $res['max_dev']['r'];
+					$run['l'] = $res['max_dev']['l'];
 				}
 				else{
 					
@@ -253,6 +254,7 @@ function checkExperimentCmds($cmd)
 					$run['acc'] = $res['max_dev']['a'];
 					$run['p'] = $res['max_dev']['p'];
 					$run['r'] = $res['max_dev']['r'];
+					$run['l'] = $res['max_dev']['l'];
 				}
 				
 				array_push($output['results'], $run);
@@ -349,7 +351,7 @@ function checkExperimentCmds($cmd)
 		}
 		
 		else if( $_GET['cmd'] == "update_shown_results" ){
-			$acc = $prec = $recall = $fscore = 0;
+			$acc = $prec = $recall = $fscore = $loss = 0;
 		
 			if( $_GET['accuracy'] == "yes" )
 				$acc = 1;
@@ -359,8 +361,10 @@ function checkExperimentCmds($cmd)
 				$recall = 1;
 			if( $_GET['fscore'] == "yes" )
 				$fscore = 1;
+			if( $_GET['loss'] == "yes" )
+				$loss = 1;
 		
-			$entry = $db->Experiments->update(array('_id' => new MongoId($experimentID)), array('$set' => array('shown_results' => array('accuracy' => $acc, 'precision' => $prec, 'recall' => $recall, 'fscore' => $fscore))));
+			$entry = $db->Experiments->update(array('_id' => new MongoId($experimentID)), array('$set' => array('shown_results' => array('accuracy' => $acc, 'precision' => $prec, 'recall' => $recall, 'fscore' => $fscore, 'loss' => $loss))));
 		}
 		else if( $cmd == "delete_run" ){
 			$runID = $_GET['id'];

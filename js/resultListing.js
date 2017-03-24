@@ -156,7 +156,7 @@ function Results(groupByValue)
 			}
 
 			if( fixedFeatures.length > 0 ){
-				panel += "<tr height=25><td class=VerySmallTxt style='line-height:160%' nowrap>Fixed Parameters [ ";
+				panel += "<tr height=25><td class=VerySmallTxt style='line-height:160%'>Fixed Parameters [ ";
 				panel += "<a class=SilentLink href='javascript:removeAllFixedFeatures()'>Unfix All</a> ]:";
 				for(var i = 0; i < fixedFeatures.length; i++){
 					var fixedFeature = fixedFeatures[i];
@@ -191,6 +191,8 @@ function Results(groupByValue)
 				panel += "<td class=SmallTxt width=60 align=center nowrap><b><small>Prec.</small></b></td>";
 			if( focusedExperiment.isResultsShown("recall") )
 				panel += "<td class=SmallTxt width=60 align=center nowrap><b><small>Recall</small></b></td>";
+			if( focusedExperiment.isResultsShown("loss") )
+				panel += "<td class=SmallTxt width=60 align=center nowrap><b><small>Loss</small></b></td>";
 			panel += "<td class=SmallTxt width=100 align=center nowrap><b><small>RunDate</small></b></td>";
 			if( focusedExperiment.sharer == "" )
 				panel += "<td class=SmallTxt width=80 align=center nowrap><b><small>Cmd</small></b></td>";

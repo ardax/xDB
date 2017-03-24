@@ -65,6 +65,7 @@ function Experiment()
 		panel += "<tr><td width=20 nowrap><input id='"+this.id+"_show_precision' type=checkbox value='precision' "+this.isResultVisible("precision")+"/></td><td class=SmallTxt width=200 nowrap>Precision</td></tr>";
 		panel += "<tr><td width=20 nowrap><input id='"+this.id+"_show_recall' type=checkbox value='recall' "+this.isResultVisible("recall")+"/></td><td class=SmallTxt width=200 nowrap>Recall</td></tr>";
 		panel += "<tr><td width=20 nowrap><input id='"+this.id+"_show_fscore' type=checkbox value='fscore' "+this.isResultVisible("fscore")+"/></td><td class=SmallTxt width=200 nowrap>F-score</td></tr>";
+		panel += "<tr><td width=20 nowrap><input id='"+this.id+"_show_loss' type=checkbox value='loss' "+this.isResultVisible("loss")+"/></td><td class=SmallTxt width=200 nowrap>Loss</td></tr>";
 		panel += "</table></td></tr></table>";
 		
 		panel += "</td></tr>";
@@ -190,11 +191,13 @@ function Experiment()
 			else if( this.isResultsShown("fscore") ) panel += "FScore";
 			else if( this.isResultsShown("precision") ) panel += "Precision";
 			else if( this.isResultsShown("recall") ) panel += "Recall";
+			else if( this.isResultsShown("loss") ) panel += "Loss";
 			panel += "</b></td><td class=VerySmallTxt align=center><b>Best<br>";
 			if( this.isResultsShown("accuracy") ) panel += "Accuracy";
 			else if( this.isResultsShown("fscore") ) panel += "FScore";
 			else if( this.isResultsShown("precision") ) panel += "Precision";
 			else if( this.isResultsShown("recall") ) panel += "Recall";
+			else if( this.isResultsShown("loss") ) panel += "Loss";
 			panel += "</b></td></tr>";
 			for(var i = 0; i < this.devFiles.length; i++){
 				panel += "<tr height=28 style='cursor:hand;cursor:pointer' onmouseover='onRow(this)' onmouseout='offRow(this)' onclick=\"javascript:setFocusedExperiment('"+this.id+"', '"+this.devFiles[i]['file']+"')\">";
@@ -231,6 +234,8 @@ function Experiment()
 			return "Precision";
 		else if( this.isResultsShown("recall") )
 			return "Recall";
+		else if( this.isResultsShown("loss") )
+			return "Loss";
 		return "UNK";
 	}
 	this.showResult = function(result){
@@ -249,6 +254,10 @@ function Experiment()
 		else if( this.isResultsShown("recall") ){
 			if( result && 'r' in result )
 				return roundFloat(result['r']);
+		}
+		else if( this.isResultsShown("loss") ){
+			if( result && 'l' in result )
+				return roundFloat(result['l']);
 		}
 		return "-";
 	}
@@ -376,6 +385,18 @@ function setExperimentSettings()
 			else{
 				query += "&fscore=no";
 				focusedExperiment.shownResults['fscore'] = 0;
+			}
+		}
+
+		e = document.getElementById(focusedExperiment.id+"_show_loss");
+		if( e ){
+			if( e.checked == true ){
+				query += "&loss=yes";
+				focusedExperiment.shownResults['loss'] = 1;
+			}
+			else{
+				query += "&loss=no";
+				focusedExperiment.shownResults['loss'] = 0;
 			}
 		}
 

@@ -7,6 +7,7 @@ function Result()
 	this.acc = 0;
 	this.precision = 0;
 	this.recall = 0;
+	this.loss = 0;
 	this.runid = "";
 	this.params = new Array();
 	this.finishDate = "";
@@ -23,6 +24,8 @@ function Result()
 			this.precision = json['p'];
 		if('r' in json )
 			this.recall = json['r'];
+		if('l' in json )
+			this.loss = json['l'];
 		
 		this.runid = json['runid'];
 		this.startDate = parseInt(json['start_date']);
@@ -45,6 +48,8 @@ function Result()
 		this.acc = parseFloat(data['accuracy']);
 		this.precision = parseFloat(data['precision']);
 		this.recall = parseFloat(data['recall']);
+		if( 'loss' in data )
+			this.loss = parseFloat(data['loss']);
 	}
 	this.setParams = function(params){
 		this.params.length = 0;
@@ -86,6 +91,9 @@ function Result()
 		}
 		if( focusedExperiment.isResultsShown("recall") ){
 			panel += "<td class=SmallTxt width=60 align=center nowrap><a class=SilentLink href=\"javascript:showResultsGraph('"+this.runid+"', 'PRF')\">"+roundFloat(this.recall)+"</a></td>";
+		}
+		if( focusedExperiment.isResultsShown("loss") ){
+			panel += "<td class=SmallTxt width=60 align=center nowrap><a class=SilentLink href=\"javascript:showResultsGraph('"+this.runid+"', 'Loss')\">"+roundFloat(this.loss, 4)+"</a></td>";
 		}
 		
 		if( this.baseline == false ){
