@@ -110,7 +110,7 @@ function dateToString(date) {
 function printDate(dt)
 {
 	var now = parseInt((new Date()).getTime()/1000);
-	var time = dt+1*60*60;
+	var time = dt+0*60*60;
 	var strDate = "";
 
 	if( now-time < 5 )

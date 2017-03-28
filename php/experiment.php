@@ -190,6 +190,11 @@ function checkExperimentCmds($cmd)
 					$run['p'] = $res['max_dev']['p'];
 					$run['r'] = $res['max_dev']['r'];
 					$run['l'] = $res['max_dev']['l'];
+
+					if( ISSET($res['max_dev']['tl']) )
+						$run['tl'] = $res['max_dev']['tl'];
+					if( ISSET($res['max_dev']['ta']) )
+						$run['ta'] = $res['max_dev']['ta'];
 				}
 				else{
 					
@@ -255,6 +260,11 @@ function checkExperimentCmds($cmd)
 					$run['p'] = $res['max_dev']['p'];
 					$run['r'] = $res['max_dev']['r'];
 					$run['l'] = $res['max_dev']['l'];
+
+					if( ISSET($res['max_dev']['tl']) )
+						$run['tl'] = $res['max_dev']['tl'];
+					if( ISSET($res['max_dev']['ta']) )
+						$run['ta'] = $res['max_dev']['ta'];
 				}
 				
 				array_push($output['results'], $run);
@@ -324,6 +334,11 @@ function checkExperimentCmds($cmd)
 							$run['acc'] = $res['max_dev']['a'];
 							$run['p'] = $res['max_dev']['p'];
 							$run['r'] = $res['max_dev']['r'];
+							
+							if( ISSET($res['max_dev']['tl']) )
+								$run['tl'] = $res['max_dev']['tl'];
+							if( ISSET($res['max_dev']['ta']) )
+								$run['ta'] = $res['max_dev']['ta'];
 
 							array_push($output['grouped_results'][$group_value]['results'], $run);
 						}
@@ -339,7 +354,14 @@ function checkExperimentCmds($cmd)
 				$output = array('run_id' => $_GET['run_id'], 'results' => array());
 		
 				foreach( $result['results'] as $res){
-					array_push($output['results'], array('a' => $res['a'], 'f' => $res['f'], 'i' => $res['i'], 'p' => $res['p'], 'r' => $res['r'], 'l' => $res['l'], 't' => $res['t']));
+					$result = array('a' => $res['a'], 'f' => $res['f'], 'i' => $res['i'], 'p' => $res['p'], 'r' => $res['r'], 'l' => $res['l'], 't' => $res['t']);
+					
+					if( ISSET($res['ta']) )
+						$result['ta'] = $res['ta'];
+					if( ISSET($res['tl']) )
+						$result['tl'] = $res['tl'];
+					
+					array_push($output['results'], $result);
 				}
 				print json_encode($output);
 			}

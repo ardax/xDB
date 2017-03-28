@@ -315,10 +315,14 @@ function RunGraph()
 			panel += "<tr height=50><td class=SmallTxt style='padding-left:10px'>Run<br><small style='color:#ababab'>#"+this.runID+"</small></td></tr>";
 			if( this.hasAccuracy() )
 				panel += this.printTab("Accuracy", "Accuracy");
+			if( this.hasTrainingAccuracy() )
+				panel += this.printTab("Training Accuracy", "Training Accuracy");
 			if( this.hasPRF() )
 				panel += this.printTab("FScore/Precision/Recall", "PRF");
 			if( this.hasLoss() )
 				panel += this.printTab("Loss", "Loss");
+			if( this.hasTrainingLoss() )
+				panel += this.printTab("Training Loss", "Training Loss");
 			panel += "<tr height=30><td style='border-bottom:1px solid #dfdfdf'></td></tr>";
 			panel += "<tr height=20><td></td></tr>";
 			panel += "<tr height=26><td class=SmallTxt style='padding-left:10px'> Maximum "+this.resultType+" on Dev = "+roundFloat(max)+"</td></tr>";
@@ -356,10 +360,15 @@ function RunGraph()
 		
 		var title = "";
         var mstats = new Array();
+        
         if( this.resultType == "PRF" )
         	mstats.push(["Time", "Prec", "Rec", "FScore"]);
         else if( this.resultType == "Loss" )
         	mstats.push(["Time", "Loss"]);
+        else if( this.resultType == "Training Loss" )
+        	mstats.push(["Time", "Training Loss"]);
+        else if( this.resultType == "Training Accuracy" )
+        	mstats.push(["Time", "Training Accuracy"]);
         else
         	mstats.push(["Time", "Accuracy"]);
 
@@ -392,6 +401,10 @@ function RunGraph()
 	            }
 	            else if( this.resultType == "Loss" )
 	            	arr.push(result['l']);
+	            else if( this.resultType == "Training Loss" )
+	            	arr.push(result['tl']);
+	            else if( this.resultType == "Training Accuracy" )
+	            	arr.push(result['ta']);
 	            else
 	                arr.push(roundFloat(result['a']*100));
 	
@@ -419,9 +432,23 @@ function RunGraph()
 		}
 		return false;
 	}
+	this.hasTrainingLoss = function(){
+		for(var i = 0; i < this.results.length; i++){
+			if( this.results[i]['t'] == 0 && 'tl' in this.results[i] )
+				return true;
+		}
+		return false;
+	}
 	this.hasAccuracy = function(){
 		for(var i = 0; i < this.results.length; i++){
 			if( this.results[i]['t'] == 0 && this.results[i]['a'] > 0 )
+				return true;
+		}
+		return false;
+	}
+	this.hasTrainingAccuracy = function(){
+		for(var i = 0; i < this.results.length; i++){
+			if( this.results[i]['t'] == 0 && 'ta' in this.results[i] )
 				return true;
 		}
 		return false;
