@@ -525,6 +525,7 @@ function fixThisFeature(feature)
 		fixedFeatures.push({'feature': feature, 'value': ""});
 	}
 	
+	startAt = 0;
 	groupFeature = "";
 	var e = document.getElementById("group_by_box");
 	if( e ) e.innerHTML = "<a class=SilentLink href='javascript:groupResultsBy()'>Group By</a>";

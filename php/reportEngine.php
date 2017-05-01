@@ -121,6 +121,11 @@ function checkReportQueryCmds($cmd)
 							'f' => $fscore,
 							'l' => $loss,
 							't' => (int)$_GET['is_test']);
+
+			if( ISSET($_GET['training_loss']) )
+				$result['tl'] = (float)$_GET['training_loss'];
+			if( ISSET($_GET['training_accuracy']) )
+				$result['ta'] = (float)$_GET['training_accuracy'];
 			
 			$db->selectCollection("Runs-".$experimentID)->update(array('_id' => $runOID), array('$addToSet' => array('results' => $result)));
 			
@@ -131,7 +136,12 @@ function checkReportQueryCmds($cmd)
 								'r' => $recall,
 								'f' => $fscore,
 								'l' => $loss);
-			
+
+				if( ISSET($_GET['training_loss']) )
+					$result['tl'] = (float)$_GET['training_loss'];
+				if( ISSET($_GET['training_accuracy']) )
+					$result['ta'] = (float)$_GET['training_accuracy'];
+							
 				if( $_GET['is_test'] == "1" )
 					$db->selectCollection("Runs-".$experimentID)->update(array('_id' => $runOID), array('$set' => array('max_test' => $result)));
 				else
