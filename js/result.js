@@ -31,7 +31,7 @@ function Result()
 		this.startDate = parseInt(json['start_date']);
 		if( 'finish_date' in json )
 			this.finishDate = parseInt(json['finish_date']);
-		if( 'last_report_date' in json )
+		else if( 'last_report_date' in json )
 			this.finishDate = parseInt(json['last_report_date']);
 		this.setParams(json['params']);
 		this.dev = json['dev'];

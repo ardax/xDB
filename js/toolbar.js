@@ -134,7 +134,7 @@ function showExperimentMenu()
 	}
 	else{
 		menu.addOption("Manage Parameters", "javascript:manageFeatures()");
-		menu.addOption("Delete All Results", "javascript:showExperimentSettings()", true);
+		menu.addOption("Delete All Results", "javascript:deleteAllExperimentResults()", true);
 		menu.addOption("Delete This Experiment", "javascript:deleteExperiment()");
 		menu.addOption("Hide Parameters in listing", "javascript:selectFeaturesToHide()", true);
 		menu.addOption("Fix a Parameter", "javascript:fixFeature()");

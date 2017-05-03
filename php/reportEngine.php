@@ -174,7 +174,10 @@ function checkReportQueryCmds($cmd)
 					// mark task as running
 					$db->selectCollection("Tasks-".$experimentID)->update(array('_id' => $runOID), array('$set' => array('is_running' => True, 'finished' => False)));
 					
-					$db->selectCollection("Runs-".$experimentID)->update(array('_id' => $runOID), array('$set' => array('start_date' => new MongoDate())));
+					if( ISSET($_GET['date']) )
+						$db->selectCollection("Runs-".$experimentID)->update(array('_id' => $runOID), array('$set' => array('start_date' => new MongoDate(intval($_GET['date'])))));
+					else
+						$db->selectCollection("Runs-".$experimentID)->update(array('_id' => $runOID), array('$set' => array('start_date' => new MongoDate())));
 				}
 			}
 		}
@@ -183,10 +186,13 @@ function checkReportQueryCmds($cmd)
 			if( $runID != "" ){
 				$runOID = new MongoId($runID);
 				
-				// remove the ask
+				// remove the task
 				$db->selectCollection("Tasks-".$experimentID)->remove(array('_id' => $runOID));
-			
-				$db->selectCollection("Runs-".$experimentID)->update(array('_id' => $runOID), array('$set' => array('finish_date' => new MongoDate())));
+
+				if( ISSET($_GET['date']) )
+					$db->selectCollection("Runs-".$experimentID)->update(array('_id' => $runOID), array('$set' => array('finish_date' => new MongoDate(intval($_GET['date'])))));
+				else
+					$db->selectCollection("Runs-".$experimentID)->update(array('_id' => $runOID), array('$set' => array('finish_date' => new MongoDate())));
 			}
 		}
 		else if( $cmd == "get_new_tasks" ){

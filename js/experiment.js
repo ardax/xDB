@@ -654,6 +654,16 @@ function onUnshareExperimentFile(req, sharedFile, sharedUserName)
 	}
 }
 
+function deleteAllExperimentResults()
+{
+	if( confirm('Are you sure you want to delete all the results of this experiment? It is irreversable!') ){
+		var query = "cmd=delete_all_experiment_results&experiment_id="+focusedExperiment.id;
+		
+		var req = createRequest();
+		makeRequest(req, query, function(){ onRefresh(req); });
+	}
+}
+
 function deleteAllResultsOfExperimentFile()
 {
 	if( confirm('Are you sure you want to delete the results taken on this experiment file? It is irreversable!') ){

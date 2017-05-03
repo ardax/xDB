@@ -238,8 +238,12 @@ function Results(groupByValue)
 			panel += "<td width=30 class=NavButton onmouseover='onArea(this)' onmouseout='offArea(this)' onclick=\"javascript:showResultsPage('"+(i*this.pageSize)+"')\" nowrap>"+(i+1)+"</td>";
 		}
 		panel += "<td width=30 class=SelectedNavButton nowrap>"+(i+1)+"</td>";
-		for(var i = pageIndex+1; i < pageCount; i++){
+		for(var i = pageIndex+1; i < pageCount && i <= pageIndex+10; i++){
 			panel += "<td width=30 class=NavButton onmouseover='onArea(this)' onmouseout='offArea(this)' onclick=\"javascript:showResultsPage('"+(i*this.pageSize)+"')\" nowrap>"+(i+1)+"</td>";
+		}
+		if( pageIndex+10 < pageCount ){
+			panel += "<td width=30 align=center class=SmallTxt nowrap>...</td>";
+			panel += "<td width=30 class=NavButton onmouseover='onArea(this)' onmouseout='offArea(this)' onclick=\"javascript:showResultsPage('"+((pageCount-1)*this.pageSize)+"')\" nowrap>"+(pageCount)+"</td>";
 		}
 		panel += "</tr></table></center><br><br>";
 		
